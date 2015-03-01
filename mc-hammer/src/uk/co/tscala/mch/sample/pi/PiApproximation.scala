@@ -3,12 +3,12 @@ package uk.co.tscala.mch.sample.pi
 import scala.math.random
 import org.apache.spark._
 
-object PiApproximation {
+object PiApproximation  {
   def main(args: Array[String]) {
-    val conf = new SparkConf().setAppName("Spark Pi")
+    val conf = new SparkConf().setMaster("local[4]").setAppName("Spark Pi")
     val spark = new SparkContext(conf)
-    val slices = if (args.length > 0) args(0).toInt else 2
-    val n = math.min(100000L * slices, Int.MaxValue).toInt // avoid overflow
+    val slices = 2
+    val n = math.min(100000000L * slices, Int.MaxValue).toInt // avoid overflow
     val count = spark.parallelize(1 until n, slices).map { i =>
       val x = random * 2 - 1
       val y = random * 2 - 1
